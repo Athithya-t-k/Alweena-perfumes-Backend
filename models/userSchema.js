@@ -8,10 +8,10 @@ const schema =  mongoose.Schema({
         type: String,
         required: true
     }, 
-    phoneNumber:{
-        type: Number,
-        required: true
-    },
+    // phoneNumber:{
+    //     type: Number,
+    //     required: true
+    // },
     password: {
         type: String,
         required: true
@@ -24,5 +24,5 @@ const schema =  mongoose.Schema({
 
 })
 
-const userModel=  mongoose.model("DataCollection",schema);
+const userModel=  mongoose.model("Userdata",schema);
 module.exports = userModel
