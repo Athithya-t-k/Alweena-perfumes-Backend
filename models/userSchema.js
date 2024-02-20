@@ -8,19 +8,16 @@ const schema =  mongoose.Schema({
         type: String,
         required: true
     }, 
-    // phoneNumber:{
-    //     type: Number,
-    //     required: true
-    // },
+    
     password: {
         type: String,
         required: true
     },
-    PhoneVerified:{
-        type:Boolean,
-        required: true,
-        default: false
-    }
+    // PhoneVerified:{
+    //     type:Boolean,
+    //     required: true,
+    //     default: false
+    // }
 
 })
 

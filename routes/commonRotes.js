@@ -1,9 +1,10 @@
 const express = require('express')
-const Router = express.Router()
-const {postSignup}=require("../controllers/commonController")
+const router = express.Router()
+const {postSignup, verify}=require("../controllers/commonController")
 
-Router.post("/signuppost",postSignup)
+router.post("/signuppost",postSignup)
+router.post("/send-otp",verify)
 
 
 
-module.exports = Router
+module.exports = router
