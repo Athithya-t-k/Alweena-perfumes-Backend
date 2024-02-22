@@ -1,5 +1,6 @@
 const userModel = require('../models/userSchema')
 const twilio = require('../otpverification/twilio')
+const bcrypt = require ('bcrypt')
 
 
 
@@ -14,15 +15,16 @@ const object = {
             await res.status(400).json({ error: "User already exist.please login" })
             
         } else {
-            
+
+            const hashedPassword =await bcrypt.hash(password, 10); 
             const user = new userModel({
                 UserName: UserName,
                 email: email,
                
-                password: password
+                password: hashedPassword
             })
             await user.save()
-            res.status(200).json({message:"user loged"}
+            res.status(200).json({message:"user logged"}
             )
       
             
@@ -44,11 +46,29 @@ const object = {
     },
 
 
-    verifyOtp: async (req,res)=>{
+   
+ verifyOtp: async (req,res)=>{
         const otpcheck = req.body.otpNumber;
         console.log();
+    },
+    loginData: async (req, res) => {
+        const { username, password } = req.body;
+       
     }
-
     
 }
-module.exports =  object
+
+
+
+
+    
+
+
+
+
+
+
+module.exports = 
+    object
+    
+
