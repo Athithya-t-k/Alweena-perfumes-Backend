@@ -3,6 +3,7 @@ const app = express()
 const cors = require("cors")
 const bodyParser = require("body-parser")
 
+
 const port = 4004
 const mongoose = require('./Config/config')
 const dotenv = require("dotenv")
@@ -15,7 +16,7 @@ app.use (bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
 
-const commonRouter=require('../Server/routes/commonRotes')
+const commonRouter=require('./routes/userRoutes')
 
 
 app.use('/',commonRouter)
