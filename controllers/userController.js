@@ -65,7 +65,8 @@ const object = {
                 res.status(401).json({error:"otp is not valid"})
 
             }else{
-                res.status(200).json({message:"otp is valid"})
+
+                res.status(200).json({message:"otp validation completed"})
             }
         }
     },

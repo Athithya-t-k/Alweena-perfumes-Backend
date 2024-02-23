@@ -13,11 +13,11 @@ const schema =  mongoose.Schema({
         type: String,
         required: true
     },
-    // PhoneVerified:{
-    //     type:Boolean,
-    //     required: true,
-    //     default: false
-    // }
+    PhoneVerified:{
+        type:Boolean,
+        required: true,
+        default: false
+    }
 
 })
 
