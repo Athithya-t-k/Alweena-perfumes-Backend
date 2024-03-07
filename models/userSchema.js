@@ -7,17 +7,21 @@ const schema =  mongoose.Schema({
     email: {
         type: String,
         required: true
+    },
+    phoneNumber:{
+        type:Number,
+        required: true
     }, 
-    
     password: {
         type: String,
         required: true
     },
-    PhoneVerified:{
-        type:Boolean,
-        required: true,
-        default: false
+    role: {
+        type: String,
+        default: 'user',
+        required: true
     }
+    
 
 })
 
