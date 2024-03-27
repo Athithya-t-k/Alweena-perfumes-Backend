@@ -16,10 +16,11 @@ app.use (bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
 
-const commonRouter=require('./routes/userRoutes')
-
+const commonRouter=require('./routes/commonRoutes')
+const userRoute=require('./routes/userRoutes')
 
 app.use('/',commonRouter)
+app.use('/user',userRoute)
 
 
 app.listen(port,() => console.log('server started on the port ', port))

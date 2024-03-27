@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const {default: mongoose} = require('mongoose');
 
 function config(){
     mongoose.connect (process.env.MONGO_URL).then(()=>{
