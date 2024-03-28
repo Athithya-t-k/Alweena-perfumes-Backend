@@ -6,5 +6,7 @@ const userController=require("../controllers/userController")
 //add to cart
 router.post("/addToCart",userController.addToCart)
 
+//list items in the cart
+router.get('/cartItems',userController.getCartItems)
 
 module.exports=router

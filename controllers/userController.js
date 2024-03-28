@@ -45,6 +45,34 @@ addToCart =  async (req, res) => {
   }
 };
 
+//get items in the cart
+getCartItems = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // get the cart for the user
+    const cart = await Cart.findOne({ user: userId }).populate("items.product");
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found", items: [] });
+    }
+    // take necessary details of the cart items
+    const cartItems = cart.items.map((item) => ({
+      productId: item.product._id,
+      productName: item.product.name,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+
+    res.json({ items: cartItems });
+
+  } catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   addToCart,
+  getCartItems
 };
