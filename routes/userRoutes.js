@@ -9,4 +9,8 @@ router.post("/addToCart",userController.addToCart)
 //list items in the cart
 router.get('/cartItems',userController.getCartItems)
 
+
+//delete item from the cart
+router.delete('/removeItem/:productId',userController.deleteCartItem)
+
 module.exports=router

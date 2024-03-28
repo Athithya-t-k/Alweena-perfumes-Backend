@@ -72,7 +72,38 @@ getCartItems = async (req, res) => {
   }
 };
 
+// Delete an item from the cart
+deleteCartItem = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+
+    //get cart for the user
+    const cart = await Cart.findOne({ user: userId });
+
+    // check if the product is in the cart
+    const itemIndex = cart.items.findIndex((item) => item.product === productId);
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: "Item not found in the cart" });
+    }
+
+    // Remove the item 
+    cart.items.splice(itemIndex, 1);
+
+    // Save the updated cart
+    await cart.save();
+
+    res.json({ message: "Item removed from cart successfully" });
+
+  } catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   addToCart,
-  getCartItems
+  getCartItems,
+  deleteCartItem
 };
