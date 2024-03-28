@@ -15,4 +15,7 @@ router.delete('/removeItem/:productId',userController.deleteCartItem)
 //clear cart
 router.delete('/clearCart',userController.clearCart)
 
+//update item quantity
+router.put('/updateQuantity',userController.updateQuantity)
+
 module.exports=router
