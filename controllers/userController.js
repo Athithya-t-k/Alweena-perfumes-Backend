@@ -128,9 +128,78 @@ clearCart = async (req, res) => {
   }
 }
 
+// update tha quantity of carted item
+updateQuantity = async (req, res) => {
+  try {
+      const userId = req.user.id;
+      const {productId,newQuantity} = req.body;
+
+      // Find the cart for the user
+      const cart = await Cart.findOne({ user: userId });
+
+      if (!cart) {
+          return res.status(404).json({ message: 'Cart not found' });
+      }
+
+      // Find the item in the cart by product ID
+      const cartItem = cart.items.find(item => item.product === productId);
+
+      if (!cartItem) {
+          return res.status(404).json({ message: 'Item not found in the cart' });
+      }
+
+      // Get the current quantity and price of the item
+      const currentQuantity = cartItem.quantity;
+      const itemPrice = cartItem.price;
+
+      // Update the quantity of the item
+      cartItem.quantity = newQuantity;
+
+      // change in quantity
+      const quantityChange = newQuantity - currentQuantity;
+
+      // Update the total price of the cart based on the quantity change
+      cart.totalPrice += quantityChange * itemPrice;
+
+      // Save the update
+      await cart.save();
+
+      res.json({ message: 'Quantity updated successfully', changedData:{newQuantity,totalPrice:cart.totalPrice} });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+//add review
+addReview = async (req, res) => {
+  try {
+      const userId=req.user.id
+      const { productId,rating,comment } = req.body;
+
+      // Create a new review 
+      const newReview = new Review({
+          user: userId,
+          product: productId,
+          rating: rating,
+          comment: comment
+      });
+
+      // Save the new review to the database
+      await newReview.save();
+
+      res.json({ message: 'Review added successfully', review: newReview });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   addToCart,
   getCartItems,
   deleteCartItem,
-  clearCart
+  clearCart,
+  updateQuantity,
+  addReview
 };
