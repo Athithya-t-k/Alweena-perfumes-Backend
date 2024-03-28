@@ -171,10 +171,35 @@ updateQuantity = async (req, res) => {
   }
 }
 
+//add review
+addReview = async (req, res) => {
+  try {
+      const userId=req.user.id
+      const { productId,rating,comment } = req.body;
+
+      // Create a new review 
+      const newReview = new Review({
+          user: userId,
+          product: productId,
+          rating: rating,
+          comment: comment
+      });
+
+      // Save the new review to the database
+      await newReview.save();
+
+      res.json({ message: 'Review added successfully', review: newReview });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   addToCart,
   getCartItems,
   deleteCartItem,
   clearCart,
-  updateQuantity
+  updateQuantity,
+  addReview
 };
