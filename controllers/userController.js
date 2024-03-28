@@ -45,6 +45,92 @@ addToCart =  async (req, res) => {
   }
 };
 
+//get items in the cart
+getCartItems = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // get the cart for the user
+    const cart = await Cart.findOne({ user: userId }).populate("items.product");
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found", items: [] });
+    }
+    // take necessary details of the cart items
+    const cartItems = cart.items.map((item) => ({
+      productId: item.product._id,
+      productName: item.product.name,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+
+    res.json({ items: cartItems });
+
+  } catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Delete an item from the cart
+deleteCartItem = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+
+    //get cart for the user
+    const cart = await Cart.findOne({ user: userId });
+
+    // check if the product is in the cart
+    const itemIndex = cart.items.findIndex((item) => item.product === productId);
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: "Item not found in the cart" });
+    }
+
+    // Remove the item 
+    cart.items.splice(itemIndex, 1);
+
+    // Save the updated cart
+    await cart.save();
+
+    res.json({ message: "Item removed from cart successfully" });
+
+  } catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// clear cart
+clearCart = async (req, res) => {
+  try {
+      const userId = req.user.id;
+
+      // Find the cart for the user
+      const cart = await Cart.findOne({ user: userId });
+
+      if (!cart) {
+          return res.status(404).json({ message: 'Cart not found' });
+      }
+
+      // Clear the items array in the cart
+      cart.items = [];
+
+      // Save the updated cart
+      await cart.save();
+
+      res.json({ message: 'Cart cleared successfully' });
+      
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   addToCart,
+  getCartItems,
+  deleteCartItem,
+  clearCart
 };
